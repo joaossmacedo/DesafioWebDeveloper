@@ -12,6 +12,9 @@ $.ajax({
 
     // popula a table
     populateTable();
+  },
+  error: function() {
+    $("#title").html("Não há conexão à internet");
   }
 });
 
@@ -37,7 +40,7 @@ function deleteTable() {
 }
 
 // reconstroi a table
-function createTable() {
+function recreateTable() {
   $("body .container").append('<table id="tbl"><thead><tr><th>Nome</th><th>Email</th><th>Telefone</th></tr></thead></table>');
   populateTable();
 }
@@ -85,5 +88,5 @@ $('body').on('click','#go-back', function() {
   doc = document.getElementsByClassName('container')[0];
   doc.removeChild(info);
 
-  createTable();
+  recreateTable();
 });
