@@ -8,3 +8,9 @@ table, th, td{
 table th, table td{
   padding: 5px;
 }
+
+.grid {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  text-align: left;
+}

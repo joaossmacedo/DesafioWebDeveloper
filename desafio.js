@@ -6,13 +6,18 @@ $.ajax({
   dataType: 'json',
   success: function(data) {
     roster = data.results;
+    // cria a table e a sua head
+    $("body .container").append("<table><thead><tr><th>Nome</th><th>Email</th><th>Telefone</th></tr></thead></table>")
     console.log(roster);
-    construct_table();
+    // popula a table
+    populate_table();
   }
 });
 
 // constroi a table usando os valores fornecidos pela API
-function construct_table(){
+function populate_table(){
+  $("table").append("<tbody></tbody>")
+
   for (i = 0; i < 25; i++) {
     var name = roster[i].name.first;
     var email = roster[i].email;
@@ -30,5 +35,33 @@ $('body').on('click','tr', function() {
     }
   }
   var pos = i - 1
-  console.log(pos);
+  if(pos > -1){
+    var photo = roster[pos].picture.medium;
+    var name = roster[pos].name.first + ' ' + roster[pos].name.last;
+    var email = roster[pos].email;
+    var bday = roster[pos].dob.date;
+    var phone = roster[pos].phone;
+    var adress = roster[pos].location.street;
+
+    console.log(photo);
+    console.log(name);
+    console.log(email);
+    console.log(bday);
+    console.log(phone);
+    console.log(adress);
+
+    // <div class="grid-container">
+    // <div class="grid-item">1</div>
+    // <div class="grid-item">2</div>
+    // <div class="grid-item">3</div>
+    // </div>
+
+    // adiciona nome, foto, email, telefone, aniversario e endereco
+    $("body .container").append('<h3>' + name +
+    '</h3><div class="grid"><div><img src="' + photo +
+    '"></div><div><p>' + email + '</p><p>' + phone + '</p></div><div><p>' +
+    bday + '</p><p>' + adress + '</p></div></div>')
+
+    console.log(pos);
+  }
 });
