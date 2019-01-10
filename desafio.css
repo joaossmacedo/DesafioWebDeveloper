@@ -18,3 +18,7 @@ table th, table td{
 thead {
   background-color: #adadad;
 }
+
+.btn{
+  margin-top: 15px;
+}

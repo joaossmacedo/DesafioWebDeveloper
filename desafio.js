@@ -64,10 +64,13 @@ $('body').on('click','tr', function() {
     var adress = roster[pos].location.street;
 
     // adiciona nome, foto, email, telefone, aniversario e endereco
-    $("body .container").append('<div id=info><h3 id=name>' + name +
+    $("body .container").append('<div id="info"><h3 id="name">' + name +
     '</h3><div class="grid"><div><img src="' + photo +
     '"></div><div><p>' + email + '</p><p>' + phone + '</p></div><div><p>' +
     bday + '</p><p>' + adress + '</p></div></div></div>');
+
+    // adiciona o botao de voltar
+    $("body .container #info").append('<button id="go-back" type="button" class="btn btn-danger">Voltar</button>');
 
     // deleta a table
     deleteTable();
@@ -75,8 +78,8 @@ $('body').on('click','tr', function() {
   }
 });
 
-// ao clicar no h3 retorna para a pagina inicial(com a table)(Figura 1)
-$('body').on('click','#name', function() {
+// ao clicar no botao retorna para a pagina inicial(com a table)(Figura 1)
+$('body').on('click','#go-back', function() {
   info = document.getElementById('info');
   // o uso do index e necessario visto que getElementsByClassName retorna HTMLCollection
   doc = document.getElementsByClassName('container')[0];
