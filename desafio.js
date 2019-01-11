@@ -117,6 +117,8 @@ $('body').on('click','tr', function() {
     '"></div><div><p>' + email + '</p><p>' + phone + '</p></div><div><p>' +
     bday + '</p><p>' + adress + '</p></div></div></div>');
 
+    // garante que o botao de voltar sempre esteja embaixo
+    deleteGoBack();
     // adiciona o botao de voltar
     addGoBack();
     // deleta a table
