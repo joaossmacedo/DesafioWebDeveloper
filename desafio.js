@@ -82,15 +82,32 @@ $('body').on('click','tr', function() {
       break;
     }
   }
+  // posicao relativa aos tr
+  var pos_tr = i - 1
 
-  var pos = i - 1
   // checa se a posicao e maior que -1 para nao contar com o thead
-  if(pos > -1){
-    // recebe nome, foto, email, telefone, aniversario e endereco
+  if(pos_tr > -1){
+    // pega o nome direto da table e achar a posicao do usuario em relacao ao roster
+    var name = $('table tr td')[pos_tr * 3].innerHTML;
+    for (var i = 0; i < roster.length; i++) {
+      if(roster[i].name.first + ' ' + roster[i].name.last == name){
+        break;
+      }
+    }
+    // posicao relativa ao roster
+    var pos = i;
+
+    // recebe foto, email, telefone, aniversario e endereco
     var photo = roster[pos].picture.medium;
-    var name = roster[pos].name.first + ' ' + roster[pos].name.last;
     var email = roster[pos].email;
-    var bday = roster[pos].dob.date;
+    // aniversario vem acompanhado de uma hora logo eu estou seperando da hora
+    var bdayNotFormated = roster[pos].dob.date.split('T')[0];
+    // agora estou formatando o aniversario para o padrao DD/MM/YYYY
+    var day = bdayNotFormated.split('-')[2];
+    var month = bdayNotFormated.split('-')[1];
+    var year = bdayNotFormated.split('-')[0];
+
+    var bday = day + "/" + month + "/" + year
     var phone = roster[pos].phone;
     var adress = roster[pos].location.street;
 
