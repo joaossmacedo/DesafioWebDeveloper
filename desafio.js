@@ -11,7 +11,7 @@ $.ajax({
     $("body .container").append('<table id="tbl"><thead><tr><th>Nome</th><th>Email</th><th>Telefone</th></tr></thead></table>');
 
     // popula a table
-    populateTable();
+    populateTable(roster);
   },
   error: function() {
     $("#title").html("Não há conexão à internet");
@@ -19,15 +19,28 @@ $.ajax({
 });
 
 // constroi a table usando os valores fornecidos pela API(guardada no roster)
-function populateTable(){
+function populateTable(people){
   $("table").append("<tbody></tbody>")
 
   // coloca os valores na table
-  for (i = 0; i < 25; i++) {
-    var name = roster[i].name.first;
-    var email = roster[i].email;
-    var phone = roster[i].phone;
+  for (i = 0; i < people.length; i++) {
+    var name = people[i].name.first + ' ' + people[i].name.last;
+    var email = people[i].email;
+    var phone = people[i].phone;
     $("table tbody").append("<tr><td>" + name + "</td><td>" + email + "</td><td>" + phone + "</td></tr>");
+  }
+}
+
+// reconstroi a table
+function recreateTable(people) {
+  $("body .container").append('<table id="tbl"><thead><tr><th>Nome</th><th>Email</th><th>Telefone</th></tr></thead></table>');
+  populateTable(people);
+}
+
+// adiciona botao para voltar a tela inicial
+function addGoBack() {
+  if(!($("body .container").has("#go-back").length)){
+    $("body .container").append('<button id="go-back" type="button" class="btn btn-danger">Voltar</button>');
   }
 }
 
@@ -36,16 +49,31 @@ function deleteTable() {
   table = document.getElementById('tbl');
   // o uso do index e necessario visto que getElementsByClassName retorna HTMLCollection
   doc = document.getElementsByClassName('container')[0];
-  doc.removeChild(table);
+  if(($("body .container").has("table").length)){
+    doc.removeChild(table);
+  }
 }
 
-// reconstroi a table
-function recreateTable() {
-  $("body .container").append('<table id="tbl"><thead><tr><th>Nome</th><th>Email</th><th>Telefone</th></tr></thead></table>');
-  populateTable();
+// deleta o botao de voltar
+function deleteGoBack() {
+  doc = document.getElementsByClassName('container')[0];
+  if(($("body .container").has("#go-back").length)){
+    goBackFilter = document.getElementById('go-back')
+    doc.removeChild(goBackFilter);
+  }
 }
 
-// permite ao clicar em um tr, mostrar mais dados(Figura 2)
+// deleta as info extras
+function deleteInfo() {
+  info = document.getElementById('info');
+  // o uso do index e necessario visto que getElementsByClassName retorna HTMLCollection
+  doc = document.getElementsByClassName('container')[0];
+  if(($("body .container").has("#info").length)){
+    doc.removeChild(info);
+  }
+}
+
+// permite ao clicar em um tr, mostrar info extra(Figura 2)
 $('body').on('click','tr', function() {
   var all_tr = $('table tr');
   // acha a posicao do tr clicado em relacao aos outros tr
@@ -73,20 +101,62 @@ $('body').on('click','tr', function() {
     bday + '</p><p>' + adress + '</p></div></div></div>');
 
     // adiciona o botao de voltar
-    $("body .container #info").append('<button id="go-back" type="button" class="btn btn-danger">Voltar</button>');
-
+    addGoBack();
     // deleta a table
     deleteTable();
 
   }
 });
 
+// ao clicar no botao filtra os nomes de acordo com o valor passado
+$('body').on('click','#btn-filter-name', function() {
+  deleteInfo();
+  newList = [];
+  // palavra pesquisada
+  word = document.getElementById("input-filter-name").value;
+  // filtra os nomes que contem a palavra pesquisada
+  for (var i = 0; i < roster.length; i++) {
+    var name = roster[i].name.first + ' ' + roster[i].name.last;
+    if(name.includes(word)){
+      newList.push(roster[i]);
+    }
+  }
+
+  deleteTable();
+
+  recreateTable(newList);
+
+  // adiciona o botao de voltar
+  addGoBack();
+});
+
+// ao clicar no botao filtra os emails de acordo com o valor passado
+$('body').on('click','#btn-filter-email', function() {
+  deleteInfo();
+  newList = [];
+  // palavra pesquisada
+  word = document.getElementById("input-filter-email").value;
+  // filtra os nomes que contem a palavra pesquisada
+  for (var i = 0; i < roster.length; i++) {
+    var email = roster[i].email;
+    if(email.includes(word)){
+      newList.push(roster[i]);
+    }
+  }
+
+  deleteTable();
+
+  recreateTable(newList);
+
+  // adiciona o botao de voltar
+  addGoBack();
+});
+
 // ao clicar no botao retorna para a pagina inicial(com a table)(Figura 1)
 $('body').on('click','#go-back', function() {
-  info = document.getElementById('info');
-  // o uso do index e necessario visto que getElementsByClassName retorna HTMLCollection
-  doc = document.getElementsByClassName('container')[0];
-  doc.removeChild(info);
+  deleteInfo();
+  deleteTable();
+  deleteGoBack();
 
-  recreateTable();
+  recreateTable(roster);
 });
