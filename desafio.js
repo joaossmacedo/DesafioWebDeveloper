@@ -56,6 +56,7 @@ function deleteTable() {
 
 // deleta o botao de voltar
 function deleteGoBack() {
+  // o uso do index e necessario visto que getElementsByClassName retorna HTMLCollection
   doc = document.getElementsByClassName('container')[0];
   if(($("body .container").has("#go-back").length)){
     goBackFilter = document.getElementById('go-back')
@@ -145,6 +146,8 @@ $('body').on('click','#btn-filter-name', function() {
 
   recreateTable(newList);
 
+  // garante que o botao de voltar sempre esteja embaixo
+  deleteGoBack();
   // adiciona o botao de voltar
   addGoBack();
 });
@@ -167,6 +170,8 @@ $('body').on('click','#btn-filter-email', function() {
 
   recreateTable(newList);
 
+  // garante que o botao de voltar sempre esteja embaixo
+  deleteGoBack();
   // adiciona o botao de voltar
   addGoBack();
 });
